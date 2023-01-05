@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    리스트 데이터 출력
+    <table>
+        <tr>
+            <th>ex1</th>
+            <th>ex2</th>
+        </tr>
+        <tr th:each="dto: ${list}">
+            <td th:text="${dto.ex1}"></td>
+            <td th:text="${dto.ex2}"></td>
+        </tr>
+    </table>
+    <p th:text="${list}"></p>
+    <p th:text="${list[0]}"></p>
+    <p th:text="${list[1]}"></p>
+</body>
+</html>
