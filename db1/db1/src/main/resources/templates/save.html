@@ -5,9 +5,12 @@
     <title>Document</title>
 </head>
 <body>
+<!-- 글작성 정보: 작성자(boardWriter), 제목(boardTitle), 비밀번호(boardPassword), 내용(boardContents) -->
 <form action="/save" method="post">
-    name : <input type="text" name="studentName"><br>
-    Age : <input type="text" name="studentAge"><br>
+    작성자 : <input type="text" name="boardWriter"><br>
+    제목 : <input type="text" name="boardTitle"><br>
+    비밀번호 : <input type="password" name="boardPassword"><br>
+    내용 : <input type="text" name="boardContents"><br>
     <input type="submit" value="등록">
 </form>
 </body>
