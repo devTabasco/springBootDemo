@@ -5,10 +5,12 @@ import com.icia.db1.dto.StudentDTO;
 import com.icia.db1.services.BoardService;
 import com.icia.db1.services.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 // MVC(Model View Controller)
 /* Java Class
@@ -26,13 +28,30 @@ public class BoardController {
         return "save";
     }
 
-    @GetMapping("/list")
-    public String listForm(){
+    @GetMapping("/board/")
+    public String findAll(Model model){
+        List<BoardDTO> boardDTOList = boardService.findAll();
+        model.addAttribute("boardList",boardDTOList);
+
         return "list";
     }
 
+    @GetMapping("/board/{id}")
+    public String findById(@PathVariable("id") Long id, Model model){
+        boardService.updateHits(id); //조회수 증가
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board",boardDTO);
+       return "detail";
+    }
+
+    //상세조회(/board?id=3)
+//    @GetMapping("/board")
+//    public String findById(@RequestParam("id") Long id, Model model){
+//
+//    }
+
     // Save.html에서 입력한 학생 정보 가저오기
-    @PostMapping("/save")
+    @PostMapping("/dataSave")
 //    public String save(@RequestParam("studentName") String studentName,
 //                       @RequestParam("studentAge") int studentAge){
 //        return null;
@@ -43,6 +62,7 @@ public class BoardController {
         //studentService Class의 save 매서드를 호출
         boardService.save(boardDTO);
 
-        return "index";
+        //redirect 방식으로 목록 출력을 위한 url요청
+        return "redirect:/board/";
     }
 }

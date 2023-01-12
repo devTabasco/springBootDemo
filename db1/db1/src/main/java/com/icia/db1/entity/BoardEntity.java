@@ -26,33 +26,33 @@ public class BoardEntity {
     private Long id;
 
     @Column(nullable = false, length = 20) //제약조건 추가
-    private String board_writer;
+    private String boardWriter;
 
     //board_title: varchar(50), not null
     @Column(nullable = false, length = 50)
-    private String board_title;
+    private String boardTitle;
 
     //board_pass: varchar(20), not null
     @Column(nullable = false, length = 20)
-    private String board_pass;
+    private String boardPass;
 
     //board_contents: varchar(500)
     @Column
-    private String board_contents;
+    private String boardContents;
 
     //board_hits: int
     @Column
-    private int board_hits;
+    private int boardHits;
 
     // DTO -> ENTITY RETURN
     public static BoardEntity toEntity(BoardDTO boardDTO) {
         //외부에서 studentEntity에 직접접근하지말고, 내부에서만 접근해서 사용하자...
         BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setBoard_writer(boardDTO.getBoardWriter());
-        boardEntity.setBoard_title(boardDTO.getBoardTitle());
-        boardEntity.setBoard_pass(boardDTO.getBoardPass());
-        boardEntity.setBoard_contents(boardDTO.getBoardContents());
-        boardEntity.setBoard_hits(boardDTO.getBoardHits());
+        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardPass(boardDTO.getBoardPass());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setBoardHits(0);
         return boardEntity;
     }
 }

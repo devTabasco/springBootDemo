@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>list</title>
+</head>
+<body>
+<button onclick="saveReq()">글작성</button>
+<table>
+    <tr>
+        <th>id</th>
+        <th>title</th>
+        <th>writer</th>
+        <th>hits</th>
+    </tr>
+    <tr th:each="board: ${boardList}">
+        <!--
+            rest api
+            글 번호(id)가 3인 게시글 조회
+            /board?id=3 => query string
+            /board/3 => rest api
+         -->
+        <td th:text="${board.id}"></td>
+        <td><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td>
+        <td th:text="${board.boardWriter}"></td>
+        <td th:text="${board.boardHits}"></td>
+    </tr>
+</table>
+</body>
+<script>
+    const saveReq = () => {
+        location.href = "/board/save";
+    }
+</script>
+</html>
