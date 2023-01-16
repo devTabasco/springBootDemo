@@ -31,6 +31,7 @@
 <button onclick="updateReq()">수정</button>
 <button onclick="deleteReq()">삭제</button>
 </body>
+<!--th:inline을 사용해야 thymeleaf의 tag를 사용할 수 있음. -->
 <script th:inline="javascript">
     const listReq = () => {
         console.log("상세조회 목록");

@@ -6,6 +6,9 @@ import com.icia.db1.services.BoardService;
 import com.icia.db1.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,31 @@ public class BoardController {
        return "detail";
     }
 
+    @GetMapping("/board/update/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("boardUpdate",boardDTO);
+        return "update";
+    }
+
+    //http request method
+    //get, host, put(patch), delete
+
+    @GetMapping("/board/delete/{id}")
+    public String delete(@PathVariable("id") Long id, Model model){
+        //RestAPI의 정석은 deleteMapping 이용
+        boardService.delete(id);
+        //서버에 삭제 후 재요청해야하기 때문에 redirect
+        return "redirect:/board/";
+    }
+
+    @PostMapping("/board/update") //수정처리
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model){
+        BoardDTO board = boardService.update(boardDTO);
+        model.addAttribute("board",board);
+        return "detail";
+    }
+
     //상세조회(/board?id=3)
 //    @GetMapping("/board")
 //    public String findById(@RequestParam("id") Long id, Model model){
@@ -65,4 +93,13 @@ public class BoardController {
         //redirect 방식으로 목록 출력을 위한 url요청
         return "redirect:/board/";
     }
+
+    @GetMapping("/board/paging")
+    public String paging(@PageableDefault(page=1) Pageable pageable, Model model){
+        //Page 객체(Spring 지원)
+        Page<BoardDTO> boardList = boardService.paging(pageable);
+
+        return null;
+    }
+
 }
