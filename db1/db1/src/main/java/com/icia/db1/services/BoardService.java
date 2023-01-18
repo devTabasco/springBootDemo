@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    public void save(BoardDTO boardDTO){
+    public Long save(BoardDTO boardDTO){
 
         // repository의 매서드는 대부분 Entity 또는 pk 타입의 매개변수를 요구하고,
         // 리턴은 Entity 타입으로 주는 경우가 대부분.
@@ -28,7 +28,10 @@ public class BoardService {
         // 팩토리 메서드(static Method), builder(.build())
 
         BoardEntity boardEntity = BoardEntity.toEntity(boardDTO);
-        boardRepository.save(boardEntity);
+
+        //새로 등록한 게시글의 id값을 리턴
+        //insert함과 동시에 id가져오기
+        return boardRepository.save(boardEntity).getId();
     }
 
     public BoardDTO update(BoardDTO boardDTO){
@@ -96,7 +99,8 @@ public class BoardService {
         Page<BoardEntity> boardEntities =
                 // page : 몇페이지 볼래? 0 이 시작 따라서 무조건 1씩 빼줘야함.
                 // pageLimit : 한 페이지에 몇개씩 볼래?
-                //
+                // Sort.by : 정렬 결과
+                //findAll overloading...
                 boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
 
         System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
@@ -108,6 +112,25 @@ public class BoardService {
         System.out.println("boardEntities.isFirst() = " + boardEntities.isFirst()); // 첫 페이지 여부
         System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
 
-        return null;
+        //Page<BoardEntity> => Page<BoardDTO>
+        //람다식
+        Page<BoardDTO> boardDTOS = boardEntities.map(board ->
+                                                    new BoardDTO(board.getId(),
+                                                            board.getBoardWriter(),
+                                                            board.getBoardPass(),
+                                                            board.getBoardTitle(),
+                                                            board.getBoardContents(),
+                                                            board.getBoardHits()));
+        return boardDTOS;
     }
 }
+
+
+
+
+
+
+
+
+
+
