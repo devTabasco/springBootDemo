@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>detail</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <table>
@@ -30,12 +31,36 @@
 <button onclick="listReq()">목록</button>
 <button onclick="updateReq()">수정</button>
 <button onclick="deleteReq()">삭제</button>
+<div id="comment-write">
+    <input type="text" id="commentWriter" placeholder="작성자">
+    <input type="text" id="commentContents" placeholder="내용">
+    <button onclick="commentWrite()">댓글작성</button>
+</div>
 </body>
 <!--th:inline을 사용해야 thymeleaf의 tag를 사용할 수 있음. -->
 <script th:inline="javascript">
+    const commentWrite = () => {
+        const writer = document.getElementById("commentWriter").value;
+        const contents = document.getElementById("commentContents").value;
+        const boardId = [[${board.id}]];
+        axios({
+            method: "post", //전송방식
+            url: "/comment/save", //목적지
+            data: {
+                "commentWriter" : writer,
+                "commentContents": contents,
+                "boardId": boardId
+            }
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log("error : ", err);
+        })
+    }
     const listReq = () => {
         console.log("상세조회 목록");
-        location.href = "/board/";
+        const page = [[${page}]];
+        location.href = "/board/paging?page=" + page;
     }
     const updateReq = () => {
         console.log("수정 요청");

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 board_table
@@ -43,6 +45,12 @@ public class BoardEntity {
     //board_hits: int
     @Column
     private int boardHits;
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE,
+    orphanRemoval = true, fetch = FetchType.LAZY) //부모 삭제시 자식도 삭제
+    private List<CommentEntity> commentEntityList = new ArrayList<CommentEntity>();
+
+
 
     // DTO -> ENTITY RETURN
     public static BoardEntity toEntity(BoardDTO boardDTO) {
