@@ -1,5 +1,6 @@
 package com.icia.db1.entity;
 
+import com.icia.db1.dto.CommentDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +28,11 @@ public class CommentEntity {
     private BoardEntity boardEntity; //부모 Entity 타입으로 정의
 
 
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentWriter(commentDTO.getCommentWriter());
+        commentEntity.setCommentContents(commentDTO.getCommentContents());
+        commentEntity.setBoardEntity(boardEntity);
+        return commentEntity;
+    }
 }

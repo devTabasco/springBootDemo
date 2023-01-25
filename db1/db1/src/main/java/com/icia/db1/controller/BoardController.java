@@ -1,8 +1,10 @@
 package com.icia.db1.controller;
 
 import com.icia.db1.dto.BoardDTO;
+import com.icia.db1.dto.CommentDTO;
 import com.icia.db1.dto.StudentDTO;
 import com.icia.db1.services.BoardService;
+import com.icia.db1.services.CommentService;
 import com.icia.db1.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
@@ -25,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor //final이 붙은 필드로만 매개변수로 하는 생성자를 만듦.
 public class BoardController {
     private final BoardService boardService; //생성자 주입
+    private final CommentService commentService;
     // 학생등록 페이지 출력
     @GetMapping("/save")
     public String saveForm(){
@@ -46,7 +49,9 @@ public class BoardController {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board",boardDTO);
         model.addAttribute("page",pageable.getPageNumber());
-       return "detail";
+        List<CommentDTO> commentDTOList = commentService.findAll(boardDTO.getId());
+        model.addAttribute("commentList",commentDTOList);
+        return "detail";
     }
 
     @GetMapping("/board/update/{id}")
